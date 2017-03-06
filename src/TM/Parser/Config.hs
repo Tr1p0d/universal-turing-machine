@@ -1,10 +1,14 @@
 module TM.Parser.Config
+    (withArgumentParser)
   where
 
 import Data.Monoid
 import Options.Applicative
 
 import TM.Types.Config
+
+withArgumentParser :: (Config -> IO ()) -> IO ()
+withArgumentParser f = execParser argumentParser >>= f
 
 argumentParser = info (parseConfig <**> helper)
       ( fullDesc

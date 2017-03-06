@@ -1,8 +1,23 @@
 module TM.Parser.TuringMachine
+    (parseTM, tmParser)
   where
 
 import Text.ParserCombinators.ReadP
+    ( ReadP
+    , char
+    , eof
+    , get
+    , many
+    , many1
+    , readP_to_S
+    , satisfy
+    )
 import TM.Types.TuringMachine
+    ( TError(CannotParse)
+    , TMachine(TMachine)
+    , Transition(Transition)
+    , TAction(TLeft, TRight, TWrite)
+    )
 
 
 parseTM :: String -> Either TError TMachine
@@ -19,8 +34,7 @@ tmParser = do
     final <- parseState
     newLine
     transitions <- parseTransitions
-    newLine
-    newLine
+    eof
     return $ TMachine states transitions initial final
 
 newLine = char '\n'
@@ -30,7 +44,10 @@ parseState = many1 $ satisfy (/= ',')
 parseStates = commaSep parseState
 
 parseTransitions :: ReadP [Transition]
-parseTransitions = newLineSep parseTransition
+parseTransitions = many1 $ do
+    t <- parseTransition
+    newLine
+    return t
   where
     parseComma = char ','
     parseTransition = do
@@ -52,9 +69,6 @@ parseAction = do
 
 commaSep :: ReadP a -> ReadP [a]
 commaSep = sep ','
-
-newLineSep :: ReadP a ->  ReadP [a]
-newLineSep = sep '\n'
 
 sep :: Char -> ReadP a ->  ReadP [a]
 sep c p = do

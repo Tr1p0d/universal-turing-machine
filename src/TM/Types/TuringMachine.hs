@@ -1,6 +1,21 @@
 {-# LANGUAGE LambdaCase #-}
 
 module TM.Types.TuringMachine
+    ( TAction(TLeft, TRight, TWrite)
+    , TError(CannotParse, EndOfTape, NoTransition)
+    , TMachine(TMachine)
+    , TState
+    , Tape(Tape)
+    , Transition(Transition)
+    , action
+    , end
+    , from
+    , mkTape
+    , start
+    , symbol
+    , to
+    , trans
+    )
   where
 
 

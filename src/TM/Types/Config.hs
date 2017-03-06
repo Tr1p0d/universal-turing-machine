@@ -1,4 +1,9 @@
 module TM.Types.Config
+    ( CAction(Dump, Simulate)
+    , Config(Config)
+    , config
+    , machine
+    )
   where
 
 import TM.Types.TuringMachine
